@@ -60,7 +60,6 @@ public Action:Event_PlayerSpawn(Handle:event, String:name[], bool:dontBroadcast)
 			PlaySound();
 		}
 	}
-	return Action:0;
 }
 
 bool:IsValidPlayer(client)
