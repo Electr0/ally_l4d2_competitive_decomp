@@ -13,9 +13,7 @@ enum L4D2Team
 	L4D2Team_Infected
 }
 
-#if REG_CASTLERS_SYSTEM == 1
 new bool:readyUpIsAvailable;
-#endif
 
 new Handle:sv_mincmdrate;
 new Handle:sv_maxcmdrate;
@@ -56,7 +54,6 @@ public OnPluginEnd()
 	SetConVarString(sv_mincmdrate, netvars[0], false, false);
 }
 
-#if REG_CASTLERS_SYSTEM == 1
 public OnAllPluginsLoaded()
 {
 	readyUpIsAvailable = LibraryExists("readyup");
@@ -75,7 +72,6 @@ public OnLibraryAdded(const String:name[])
 		readyUpIsAvailable = true;
 	}
 }
-#endif
 
 public OnConfigsExecuted()
 {
@@ -122,7 +118,7 @@ AdjustRates(client)
 	{
 		fLastAdjusted[client] = GetEngineTime();
 		new L4D2Team:team = view_as<L4D2Team>(GetClientTeam(client));
-		if (team == L4D2Team_Survivor || team == L4D2Team_Infected || (GetFeatureStatus(FeatureType_Native, "IsClientCaster") == FeatureStatus_Available && IsClientCaster(client)))
+		if (team == L4D2Team_Survivor || team == L4D2Team_Infected || (readyUpIsAvailable && IsClientCaster(client)))
 		{
 			ResetRates(client);
 		}
