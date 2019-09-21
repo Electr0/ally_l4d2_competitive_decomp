@@ -5,8 +5,6 @@
 #define PLUGIN_VERSION "1.3"
 #define PLUGIN_URL "http://step.l4dnation.com/"
 
-#define LINE_SIZE 512
-
 new bool:bTimerCheater[MAXPLAYERS+1];
 new Handle:hCvarServerMessage;
 
