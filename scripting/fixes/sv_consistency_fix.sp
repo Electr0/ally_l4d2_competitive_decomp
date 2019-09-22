@@ -19,14 +19,17 @@ public Plugin:myinfo =
 
 public OnPluginStart()
 {
-	if (!FileExists("whitelist.cfg", false, "GAME"))
+	if (!FileExists("whitelist.cfg"))
 	{
 		SetFailState("Couldn't find whitelist.cfg");
 	}
-	hCvarServerMessage = CreateConVar("soundm_server_message", "a SoundM Protected Server", "Message to show to Players in console", 0, false, 0.0, false, 0.0);
+	
+	hCvarServerMessage = CreateConVar("soundm_server_message", "a SoundM Protected Server", "Message to show to Players in console");
 	HookEvent("player_connect_full", Event_PlayerConnectFull);
-	RegAdminCmd("sm_consistencycheck", Command_ConsistencyCheck, 4096, "Performs a consistency check on all players.", "", 262144);
-	SetConVarInt(CreateConVar("cl_consistencycheck_interval", "180.0", "Perform a consistency check after this amount of time (seconds) has passed since the last.", 8194, false, 0.0, false, 0.0), 999999, false, false);
+	
+	RegAdminCmd("sm_consistencycheck", Command_ConsistencyCheck, ADMFLAG_RCON, "Performs a consistency check on all players.");
+	
+	SetConVarInt(CreateConVar("cl_consistencycheck_interval", "180.0", "Perform a consistency check after this amount of time (seconds) has passed since the last.", FCVAR_LAUNCHER|FCVAR_REPLICATED), 999999);
 }
 
 public Action:Event_PlayerConnectFull(Handle:event, String:name[], bool:dontBroadcast)
@@ -63,14 +66,14 @@ public Action:Command_ConsistencyCheck(client, args)
 	}
 	
 	new String:sPlayer[32];
-	GetCmdArg(1, sPlayer, 32);
+	GetCmdArg(1, sPlayer, sizeof(sPlayer));
 	
 	for (new i = 1; i <= MaxClients; i++) 
 	{
 		if (IsClientConnected(i))
 		{
 			new String:sOther[32];
-			GetClientName(i, sOther, 32);
+			GetClientName(i, sOther, sizeof(sOther));
 			if (StrEqual(sPlayer, sOther, false))
 			{
 				ConsistencyCheck(i);
