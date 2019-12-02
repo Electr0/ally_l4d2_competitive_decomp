@@ -17,7 +17,7 @@ public Plugin:myinfo =
 
 public OnPluginStart()
 {
-	HookEvent("player_hurt", PlayerHit, EventHookMode:1);
+	HookEvent("player_hurt", PlayerHit, EventHookMode_Post);
 	hDropMethod = CreateConVar("l4d2_melee_drop_method", "2", "What to do when a Tank punches a Survivor that's holding out a melee weapon? 0: Nothing. 1: Drop Melee Weapon. 2: Force Switch to Primary Weapon.", 0, false, 0.0, false, 0.0);
 	iDropMethod = GetConVarInt(hDropMethod);
 	hDropMethod.AddChangeHook(ConVarChange);
